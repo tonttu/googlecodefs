@@ -1,6 +1,7 @@
 require 'cache_fetch.rb'
 require 'xml/dom/builder'
 require 'time'
+require 'cgi'
 
 class GoogleCodeAPI
 	include CacheFetch
@@ -20,7 +21,8 @@ class GoogleCodeAPI
 			d = entry['updated'] ? Time.parse(entry["updated"].firstChild.to_s) : Time.now
 			files = {}
 			files['title'] = entry["title"].firstChild.to_s if entry['title']
-			files['match'] = entry["gcs:match"].firstChild.to_s if entry['gcs:match']
+			files['match'] = entry['gcs:match'] ? CGI.unescapeHTML(entry["gcs:match"].firstChild.to_s) : ''
+			files['match'].gsub!(/<\/?(pre|b)>/, '')
 			files['matchline'] = entry["gcs:match"].getAttribute('lineNumber').to_s if entry['gcs:match']
 			files['author'] = entry["author"].firstChild.firstChild.to_s if entry['author'] && entry['author'].firstChild.firstChild
 			files['rights'] = entry["rights"].firstChild.to_s if entry['rights']
@@ -28,8 +30,10 @@ class GoogleCodeAPI
 			files['searchurl'] = entry["link"].getAttribute('href').to_s if entry['link']
 			files['downloadurl'] = entry["gcs:package"].getAttribute('uri').to_s if entry['gcs:package']
 
+			fn, dl = files['filename'].dup, files['downloadurl'].dup
+			files.keys.each {|x| files[x] += "\n"}
 #			res[:updated] = Time.parse(entry["updated"].firstChild.to_s)
-			[d, File.basename(files['filename']), files]
+			[d, fn, files, dl]
 		end
 	end
 
