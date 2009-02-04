@@ -1,12 +1,10 @@
+#!/usr/bin/env ruby
 SOFTNAME="Google Code FileSystem 1.0-rc1"
-# http://www.hyperteksti.net/projects/googlecodefs
+# http://github.com/tonttu/googlecodefs
 # © Riku Palomäki 2007, email: 'evxh@cnybznxv.sv'.tr('a-z','n-za-m')
 #
-# With GoogleCodeFS you can search for google for sourcecode as if
+# With GoogleCodeFS you can use google code search for sourcecode as if
 # it was a filesystem. It uses fuse and it's ruby bindings.
-#
-# Example session:
-# plaaplaa
 
 
 dir = ARGV[0].to_s

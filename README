@@ -1,0 +1,35 @@
+googlecodefs is a fuse fs that can be used to make search queries to google
+code search. For example, if you would like to see how getsockname is
+used, you could just see 10 code snippets: cat ~/search/getsockname/*/match.
+
+It seems that Google altered the feed format a little, the code downloading doesn't currently work.
+
+Example session:
+
+tonttu@pipo:~$ mkdir ~/googlecodefs && ./googlecodefs.rb ~/googlecodefs &
+
+tonttu@pipo:~$ cd ~/googlecodefs
+
+tonttu@pipo:~/googlecodefs$ ls
+README
+
+tonttu@pipo:~/googlecodefs$ cat README
+This is a readme file for Google Code FileSystem 1.0-rc1
+  * search for something: cd <searchterms>
+
+tonttu@pipo:~/googlecodefs$ ls boost::thread
+Daemon.cc                      session_impl.hpp  thread.hpp.2
+gml.cpp                        thread.hpp        ThreadManager.cpp
+OgreResourceBackgroundQueue.h  thread.hpp.0
+playerclient.h                 thread.hpp.1
+
+tonttu@pipo:~/googlecodefs$ ls boost::thread/ThreadManager.cpp
+author       filename   match      rights     ThreadManager.cpp
+downloadurl  jitterbit  matchline  searchurl  title
+
+tonttu@pipo:~/googlecodefs$ cat boost::thread/ThreadManager.cpp/{author,title,match,filename}
+Code owned by external author.
+trunk/integration/cpp/konga/ProcessEngine/Engine/ThreadManager.cpp
+	boost::thread** ph = new boost::thread*[ m_threads.size() ];
+
+trunk/integration/cpp/konga/ProcessEngine/Engine/ThreadManager.cpp
